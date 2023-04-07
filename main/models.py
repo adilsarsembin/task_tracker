@@ -1,9 +1,32 @@
 from django.db import models
-
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.base_user import BaseUserManager
 
 
-# Create your models here.
+class CustomUserManager(BaseUserManager):
+    pass
+
+
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=63, unique=True)
+    first_name = models.CharField(max_length=63)
+    last_name = models.CharField(max_length=63)
+    is_supervisor = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(default=timezone.now())
+
+    USERNAME_FIELDS = "email"
+    REQUIRED_FIELDS = ["email", "username", "first_name", "last_name", "is_supervisor"]
+
+    objects = CustomUserManager()
+
+    def __str__(self):
+        return self.email
+
 
 class StatusChoices(models.TextChoices):
     to_do = 'TD', 'To do'
