@@ -32,7 +32,7 @@ class Reminder(models.Model):
 
 class Status(models.Model):
     task = models.OneToOneField(to=Task, on_delete=models.SET_NULL,
-                                verbose_name=_("Изменение статуса"), related_name="statuses",
+                                verbose_name=_("Задача"), related_name="statuses",
                                 null=True)
     previous_status = models.CharField(max_length=2, choices=StatusChoices.choices)
     next_status = models.CharField(max_length=2, choices=StatusChoices.choices)
